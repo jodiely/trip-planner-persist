@@ -37,16 +37,26 @@ router.get('/', function(req, res, next) {
 //
 //   $.ajax('/api', {method: 'get'}).then(doSomethingWithIt)
 //
-router.get('/api', (req, res, next) =>
-	Promise.props({
-		hotels: Hotel.findAll({ include: [Place] }),
-		restaurants: Restaurant.findAll({ include: [Place] }),
-		activities: Activity.findAll({ include: [Place] })
-	})
+router.get('/api/hotels', (req, res, next) =>
+	{
+		Hotel.findAll({ include: [Place] })
 		.then(data => res.json(data))
 		.catch(next)
-)
+	})
 
+router.get('/api/restaurants', (req, res, next) =>
+	{
+		Restaurant.findAll({ include: [Place] })
+		.then(data => res.json(data))
+		.catch(next)
+	})
+
+router.get('/api/activities', (req, res, next) =>
+	{
+		Activity.findAll({ include: [Place] })
+		.then(data => res.json(data))
+		.catch(next)
+	})
 // Use Fetch (built in browser API):
 //
 //   IDK, look it up on MDN?
