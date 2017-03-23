@@ -16,13 +16,18 @@ router.get('/', function(req, res, next) {
 	Promise.all([
 		Hotel.findAll({ include: [Place] }),
 		Restaurant.findAll({ include: [Place] }),
-		Activity.findAll({ include: [Place] })
+		Activity.findAll({ include: [Place] }),
+		Day.findOrCreate({
+			where: {number: 1}
+		}),
+		Day.findAll({})
 	])
-	.spread(function(hotels, restaurants, activities) {
+	.spread(function(hotels, restaurants, activities, days) {
 		res.render('index', {
-			// hotels: hotels,
-			// restaurants: restaurants,
-			// activities: activities
+			hotels: hotels,
+			restaurants: restaurants,
+			activities: activities,
+			days: days
 		})
 	})
 	.catch(next)

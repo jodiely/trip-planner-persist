@@ -72,7 +72,8 @@ $(function initializeMap () {
   // 1. Populate the <select>s with <option>s
   $('select').each(
     (_index, select) => {
-      db.then(db =>
+      db.then(db => {
+      
         $(select).append(
           db[select.dataset.type].map (
             item => Object.assign(
@@ -80,10 +81,19 @@ $(function initializeMap () {
               , {
                 item: item,
               })
+              
           )
         )
+        console.log(db[select.dataset.type])
+      }
       )
+
     })
+
+  //render the ajax request as a day in the browser
+  // db.then(  function(db) { 
+  $('#day-panel').append(db, '<ol class="current day" data-day="number"><h3><span class=day-head></span><button class=delDay>x</button></h3></ol>')
+  })
 
   // 2. Wire up the add buttons
   // We could do this if we wanted to select by the add
@@ -180,6 +190,16 @@ $(function initializeMap () {
       numberDays()
     })
 
+  // $(document).on('load', (e) => {
+  //     $.ajax({
+  //       method: 'POST',
+  //       url: `/api/days/1`
+  //     })
+  //     .then(function(){
+  //       console.log('ajax is done running now');
+  //     })
+  // })  
+
   // When we start, add a day
-  $('button.addDay').click()
+  // $('button.addDay').click()
 });
