@@ -1,11 +1,15 @@
 var Promise = require('bluebird');
 var router = require('express').Router();
 
+var dayRouter = require('./day')
+
 var db = require('../models');
 var Hotel = db.model('hotel');
 var Restaurant = db.model('restaurant');
 var Activity = db.model('activity');
 var Place = db.model('place');
+
+router.use('/api/days', dayRouter)
 
 router.get('/', function(req, res, next) {
 	Promise.all([
@@ -32,6 +36,10 @@ router.get('/api', (req, res, next) =>
         .then(data => res.json(data))
         .catch(next)
 )
+
+
+
+
 
 // Example:
 //
