@@ -8,6 +8,7 @@ var Hotel = db.model('hotel');
 var Restaurant = db.model('restaurant');
 var Activity = db.model('activity');
 var Place = db.model('place');
+var Day = db.model('day');
 
 router.use('/api/days', dayRouter)
 
