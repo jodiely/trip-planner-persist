@@ -72,7 +72,7 @@ $(function initializeMap () {
   // 1. Populate the <select>s with <option>s
   $('select').each(
     (_index, select) => {
-      db.then(db =>
+      db.then(db => {
         $(select).append(
           db[select.dataset.type].map (
             item => Object.assign(
@@ -82,8 +82,19 @@ $(function initializeMap () {
               })
           )
         )
+      }
       )
     })
+
+  //render the ajax request as a day in the browser
+  db.then(  function(db) {
+    var dayList = [];
+    db.days.forEach(function(day, i){
+          dayList.push($(`<ol id=${i+1}><h3>Day ${i+1}</h3><button class=delDay>x</button></h3></ol>`))
+    }) 
+    $('#day-panel').append(dayList)
+    $('#day-panel ol:first').addClass("current day")
+  })
 
   // 2. Wire up the add buttons
   // We could do this if we wanted to select by the add
@@ -91,7 +102,7 @@ $(function initializeMap () {
   //
   //   $('button[data-action="add"]').click(
   $('button.add').click(    
-    evt =>
+    evt => {
       $(evt.target.dataset.from)
         .find('option:selected')
         .each((_i, option) => {
@@ -108,7 +119,14 @@ $(function initializeMap () {
 
           // Add this item to our itinerary for the current day
           $('.current.day').append(li)
+
+          //in the back-end, pings our post route to set restId to dayId
+          var currentDayId = $('.current.day').attr('id')
+          $.post(`/api/days/${currentDayId}/restaurants/${item.id}`)
         })
+
+    }
+
   )
 
   // 3. Wire up delete buttons
@@ -180,6 +198,16 @@ $(function initializeMap () {
       numberDays()
     })
 
+  // $(document).on('load', (e) => {
+  //     $.ajax({
+  //       method: 'POST',
+  //       url: `/api/days/1`
+  //     })
+  //     .then(function(){
+  //       console.log('ajax is done running now');
+  //     })
+  // })  
+
   // When we start, add a day
-  //$('button.addDay').click()
+
 });

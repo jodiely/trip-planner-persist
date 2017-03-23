@@ -16,13 +16,17 @@ router.get('/', function(req, res, next) {
 	Promise.all([
 		Hotel.findAll({ include: [Place] }),
 		Restaurant.findAll({ include: [Place] }),
-		Activity.findAll({ include: [Place] })
+		Activity.findAll({ include: [Place] }),
+		Day.findOrCreate({
+			where: {number: 1}
+		})
 	])
-	.spread(function(hotels, restaurants, activities) {
+	.spread(function(hotels, restaurants, activities, days) {
+		console.log('ddd', days)
 		res.render('index', {
-			// hotels: hotels,
-			// restaurants: restaurants,
-			// activities: activities
+			hotels: hotels,
+			restaurants: restaurants,
+			activities: activities
 		})
 	})
 	.catch(next)
@@ -32,7 +36,8 @@ router.get('/api', (req, res, next) =>
     Promise.props({
         hotels: Hotel.findAll({ include: [Place] }),
         restaurants: Restaurant.findAll({ include: [Place] }),
-        activities: Activity.findAll({ include: [Place] })
+        activities: Activity.findAll({ include: [Place] }),
+		days: Day.findAll({})
     })
         .then(data => res.json(data))
         .catch(next)

@@ -9,8 +9,6 @@ var Place = db.model('place');
 var Day = db.model('day');
 
 dayRouter.get('/', function(req, res, next) {
-    //return and array of day objects of hotels, restaurants and acitivities for each day
-    //querying the database for the day objects 
     console.log('firing!')
     return Hotel.findAll({ include: [Place] })
         .then(function(data){
@@ -41,12 +39,20 @@ dayRouter.delete('/:id', function(req, res, next) {
 })
 
 
-dayRouter.put('/:id/hotels', function(req, res, next) {
-
+dayRouter.put('/:dayId/hotels/:HotelId', function(req, res, next) {
+    
 })
 
-dayRouter.put('/:id/restaurants', function(req, res, next) {
-    
+dayRouter.post('/:dayId/restaurants/:restId', function(req, res, next) {
+    Day.find({
+        where: {
+            id: req.params.dayId
+        }
+    })
+    .then(function(day){
+        day.setRestaurants(req.params.restId);
+    })
+    .catch(next)
 })
 
 dayRouter.put('/:id/activities', function(req, res, next) {
