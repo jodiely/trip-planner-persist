@@ -181,5 +181,5 @@ $(function initializeMap () {
     })
 
   // When we start, add a day
-  $('button.addDay').click()
+  //$('button.addDay').click()
 });
